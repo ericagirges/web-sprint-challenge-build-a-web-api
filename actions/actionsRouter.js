@@ -5,12 +5,12 @@ const byProjectId = require("../data/helpers/projectModel");
 
 const router = express.Router();
 
-router.get("/:id/actions", (req, res) => {
+router.get("/:projectId/actions", (req, res) => {
   byProjectId
     .get(req.params.projectId)
-    .then((actions) => {
-      if (projectId) {
-        res.status(200).json(actions);
+    .then((data) => {
+      if (data) {
+        res.status(200).json(data.actions);
       } else {
         res
           .status(404)
