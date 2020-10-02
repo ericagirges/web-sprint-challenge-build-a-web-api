@@ -36,6 +36,7 @@ router.delete("/:id", (req, res) => {
     });
 });
 
+// custom middleware to validate client data inputs
 function validateProjectContents(req, res, next) {
   if (!req.body.description || !req.body.name) {
     res
