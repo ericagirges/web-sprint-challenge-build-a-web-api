@@ -24,33 +24,33 @@ router.get("/:projectId/actions", (req, res) => {
 });
 
 router.delete("/actions/:actionsId", (req, res) => {
-    Actions.remove(req.params.actionsId)
+  Actions.remove(req.params.actionsId)
     .then((count) => {
-        if (count > 0) {
-          res.status(200).json({ message: "The project has been deleted." });
-        } else {
-          res.status(404).json({ message: "The project cold not be found." });
-        }
-      })
-      .catch((error) => {
-        console.log("ERROR: ", error);
-        res.status(500).json({ message: "Error deleting the project." });
-      });
-})
+      if (count > 0) {
+        res.status(200).json({ message: "The project has been deleted." });
+      } else {
+        res.status(404).json({ message: "The project cold not be found." });
+      }
+    })
+    .catch((error) => {
+      console.log("ERROR: ", error);
+      res.status(500).json({ message: "Error deleting the project." });
+    });
+});
 
 // custom middleware to validate client data inputs
 function validateActionContents(req, res, next) {
-    if (!req.body.description || !req.body.notes) {
-      res
-        .status(400)
-        .json({ message: "Please provide a action notes and descripton." });
-    } else {
-      next();
-    }
+  if (!req.body.description || !req.body.notes) {
+    res
+      .status(400)
+      .json({ message: "Please provide a action notes and descripton." });
+  } else {
+    next();
   }
+}
 
-router.put("/actions/:actionsId", validateActionContents, (res, req) => {
-    Actions.update(req.params.id, req.body)
+router.put("/actions/:actionsId", validateActionContents, (req, res) => {
+  Actions.update(req.params.id, req.body)
     .then((action) => {
       if (action) {
         res.status(200).json(action);
@@ -62,6 +62,20 @@ router.put("/actions/:actionsId", validateActionContents, (res, req) => {
       console.log("ERROR: ", error);
       res.status(500).json({ message: "Error updating action." });
     });
-})
+});
+
+router.post("/:projectId/actions", validateActionContents, (req, res) => {
+  Actions.insert({
+    project_id: req.params.projectId,
+    ...req.body,
+  })
+    .then((action) => {
+      res.status(201).json(action);
+    })
+    .catch((error) => {
+      console.log("ERROR: ", error);
+      res.status(500).json({ message: "Error adding new action." });
+    });
+});
 
 module.exports = router;
