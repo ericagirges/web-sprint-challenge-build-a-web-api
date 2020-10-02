@@ -23,4 +23,19 @@ router.get("/:projectId/actions", (req, res) => {
     });
 });
 
+router.delete("/actions/:actionsId", (req, res) => {
+    Actions.remove(req.params.actionsId)
+    .then((count) => {
+        if (count > 0) {
+          res.status(200).json({ message: "The project has been deleted." });
+        } else {
+          res.status(404).json({ message: "The project cold not be found." });
+        }
+      })
+      .catch((error) => {
+        console.log("ERROR: ", error);
+        res.status(500).json({ message: "Error deleting the project." });
+      });
+})
+
 module.exports = router;
