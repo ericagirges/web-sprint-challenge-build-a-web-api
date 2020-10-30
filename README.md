@@ -61,7 +61,11 @@ Commit your code regularly and meaningfully. This helps both you (in case you ev
 Be prepared to demonstrate your understanding of this week's concepts by answering questions on the following topics. You might prepare by writing down your own answers before hand.
 
 1. The core features of Node.js and Express and why they are useful.
+Node.JS allows Javascript to be compiled to be used server side and Express is a framework that allows you to handle multiple http requests to a specific url
+
 1. Understand and explain the use of Middleware?
+Middleware is what is used to ensure incoming data from the client is clean and accurate as to what the data schema requires. It helps maintain the database.
+
 1. The basic principles of the REST architectural style.
 1. Understand and explain the use of Express Routers.
 1. Describe tooling used to manually test the correctness of an API.
