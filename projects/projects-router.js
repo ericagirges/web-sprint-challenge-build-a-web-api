@@ -16,7 +16,7 @@ router.get("/", (req,res) => {
 
 // GET project by projectId
 router.get("/:projectId", (req, res) => {
-    Projects.get(req.params.id)
+    Projects.get(req.params.projectId)
       .then((project) => {
         if (project) {
           res.status(200).json(project);
@@ -56,10 +56,9 @@ router.post("/", validateProjectContents, (req, res) => {
 
 // PUT update/edit a project
 router.put("/:projectId", validateProjectContents, (req, res) => {
-    Projects.update(req.params.id, req.body) 
+    Projects.update(req.params.projectId, req.body) 
     .then(project => {
-        const id = req.params.id
-        if(id !== project.id){
+        if(!project){
             res.status(404).json({ message: "Could not find a project that matches the given id." })
         } else {
             res.status(200).json({ message: "Project has been successfully updated." })
@@ -70,8 +69,8 @@ router.put("/:projectId", validateProjectContents, (req, res) => {
 });
 
 // DELETE project by id
-router.delete("/:id", (req, res) => {
-    Projects.remove(req.params.id)
+router.delete("/:projectId", (req, res) => {
+    Projects.remove(req.params.projectId)
       .then((count) => {
         if (count > 0) {
           res.status(200).json({ message: "The project has been deleted." });
@@ -84,5 +83,17 @@ router.delete("/:id", (req, res) => {
         res.status(500).json({ message: "Error deleting the project." });
       });
   });
+
+// GET project's actions
+router.get("/:projectId/actions", (req, res) => {
+    Projects.getProjectActions(req.params.projectId)
+    .then(actions => {
+        if(actions) {
+            res.status(200).json({ actions })
+        } else {
+            res.status(500).json({ error: "Unable to get project's actions." })
+        }
+    })
+})
 
 module.exports = router;
